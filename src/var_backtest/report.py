@@ -31,11 +31,13 @@ def write_outputs(result: BacktestResult, weights: pd.DataFrame, quality: pd.Dat
     monthly = monthly_breaches(result)
     exc = exceptions(result)
 
-    summary.to_csv(out / "summary.csv", index=False)
+    # Rounded on the way out: BLAS can reorder sums between runs, so unrounded values differ in
+    # their last bits and make every rerun look like a change in version control.
+    summary.round(6).round({"Runtime, all days (s)": 2}).to_csv(out / "summary.csv", index=False)
     monthly.to_csv(out / "monthly_breaches.csv")
-    exc.to_csv(out / "exceptions.csv", index=False)
-    result.daily.to_csv(out / "daily_forecasts.csv", index=False)
-    result.t_df.rename_axis("date").to_csv(out / "student_t_df.csv")
+    _round_money(exc).to_csv(out / "exceptions.csv", index=False)
+    _round_money(result.daily).to_csv(out / "daily_forecasts.csv", index=False)
+    result.t_df.rename_axis("date").round(4).to_csv(out / "student_t_df.csv")
     weights.to_csv(out / "weights.csv")
     quality.to_csv(out / "data_quality.csv", index=False)
 
@@ -44,6 +46,12 @@ def write_outputs(result: BacktestResult, weights: pd.DataFrame, quality: pd.Dat
     (out / "report.md").write_text(render_report(summary, monthly, exc, weights, quality, result, cfg))
     log.info("Wrote outputs to %s", out)
     return out
+
+
+def _round_money(frame: pd.DataFrame) -> pd.DataFrame:
+    """Round dollar columns to cents so identical runs produce identical files."""
+    money = [c for c in frame.columns if c.endswith("_usd")]
+    return frame.assign(**{c: frame[c].round(2) for c in money})
 
 
 def _money(x: float) -> str:
@@ -100,7 +108,9 @@ def render_report(summary, monthly, exc, weights, quality, result: BacktestResul
         "- **Kupiec p**: tests whether the breach count fits the confidence level. Below 0.05 means it does not.",
         "- **Clustering p**: Christoffersen test. Below 0.05 means breaches bunch together instead of being spread out.",
         "- **Basel zone**: Green is acceptable; Yellow and Red mean too many breaches.",
-        "- **Actual loss / ES**: on breach days, the actual loss divided by the ES forecast. Above 1 means ES understated the loss.",
+        "- **Actual loss / ES**: on breach days, the actual loss divided by that day's ES forecast, averaged. Above 1 means ES understated the loss.",
+        "- **Avg ES** above is averaged over all test days. `summary.csv` also carries *Avg ES on breach days*, the average ES "
+        "forecast on the breach days only, which is the like-for-like comparison against the realised loss.",
         f"- **Runtime**: total time for all {daily['date'].nunique()} daily forecasts"
         f" (Monte Carlo uses {cfg.mc_simulations:,} scenarios per day).",
         "",

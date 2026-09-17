@@ -56,6 +56,7 @@ Eight charts compare every method, confidence level and weighting scheme. See th
 | Clustering p | Christoffersen test of whether breaches **bunch together**. Below 0.05 means they do |
 | Basel zone | Regulatory traffic light: Green is acceptable; Yellow and Red mean too many breaches |
 | Avg loss on breach days | The realised shortfall: the average actual loss when VaR was breached |
+| Avg ES on breach days | The ES forecast on those same days (in `summary.csv`). Comparing this with the line above is like-for-like; comparing against Avg ES is not, because Avg ES includes quiet days |
 | Actual loss / ES | On breach days, the actual loss divided by the ES forecast. Above 1 means ES understated the loss |
 
 ## Key findings

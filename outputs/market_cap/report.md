@@ -1,28 +1,29 @@
 # VaR and Expected Shortfall backtest: market-cap weighted
 
-Generated 2026-09-17 11:43. Portfolio $1B, 100 US large-cap stocks, 1-day horizon.
+Generated 2026-09-17 22:41. Portfolio $1B, 100 US large-cap stocks, 1-day horizon.
 Test period 02 Jan 2025 to 31 Dec 2025 (250 trading days). Each day's forecast uses the previous 59 months only (first window: 03 Feb 2020, 1237 days).
 
 ## Results
 
 | Method                  | Confidence   | Avg VaR   | Avg ES   |   Runtime (s) | Breaches (actual / expected)   |   Kupiec p | Count OK?   |   Clustering p | Basel zone   | Avg loss on breach days   |   Actual loss / ES |
 |:------------------------|:-------------|:----------|:---------|--------------:|:-------------------------------|-----------:|:------------|---------------:|:-------------|:--------------------------|-------------------:|
-| Historical              | 95%          | $19.9M    | $30.4M   |          0.11 | 10 / 12.5                      |      0.453 | Yes         |          0.401 | Green        | $33.0M                    |               1.11 |
-| Historical              | 97%          | $25.0M    | $35.5M   |          0.11 | 7 / 7.5                        |      0.851 | Yes         |          0.174 | Green        | $38.1M                    |               1.1  |
-| Historical              | 99%          | $37.0M    | $45.9M   |          0.11 | 3 / 2.5                        |      0.758 | Yes         |          0.02  | Green        | $50.3M                    |               1.13 |
-| Parametric (Normal)     | 95%          | $20.9M    | $26.4M   |          0.4  | 9 / 12.5                       |      0.286 | Yes         |          0.316 | Green        | $34.5M                    |               1.34 |
-| Parametric (Normal)     | 97%          | $24.0M    | $29.2M   |          0.4  | 7 / 7.5                        |      0.851 | Yes         |          0.174 | Green        | $38.1M                    |               1.34 |
-| Parametric (Normal)     | 99%          | $30.0M    | $34.5M   |          0.4  | 4 / 2.5                        |      0.38  | Yes         |          0.043 | Green        | $46.3M                    |               1.39 |
-| Monte Carlo (Student-t) | 95%          | $19.1M    | $29.1M   |         24.97 | 11 / 12.5                      |      0.657 | Yes         |          0.494 | Green        | $31.8M                    |               1.12 |
-| Monte Carlo (Student-t) | 97%          | $23.5M    | $34.4M   |         24.97 | 7 / 7.5                        |      0.851 | Yes         |          0.174 | Green        | $38.1M                    |               1.15 |
-| Monte Carlo (Student-t) | 99%          | $34.2M    | $47.8M   |         24.97 | 4 / 2.5                        |      0.38  | Yes         |          0.043 | Green        | $46.3M                    |               1.06 |
+| Historical              | 95%          | $19.9M    | $30.4M   |          0.12 | 10 / 12.5                      |      0.453 | Yes         |          0.401 | Green        | $33.0M                    |               1.11 |
+| Historical              | 97%          | $25.0M    | $35.5M   |          0.12 | 7 / 7.5                        |      0.851 | Yes         |          0.174 | Green        | $38.1M                    |               1.1  |
+| Historical              | 99%          | $37.0M    | $45.9M   |          0.12 | 3 / 2.5                        |      0.758 | Yes         |          0.02  | Green        | $50.3M                    |               1.13 |
+| Parametric (Normal)     | 95%          | $20.9M    | $26.4M   |          0.49 | 9 / 12.5                       |      0.286 | Yes         |          0.316 | Green        | $34.5M                    |               1.34 |
+| Parametric (Normal)     | 97%          | $24.0M    | $29.2M   |          0.49 | 7 / 7.5                        |      0.851 | Yes         |          0.174 | Green        | $38.1M                    |               1.34 |
+| Parametric (Normal)     | 99%          | $30.0M    | $34.5M   |          0.49 | 4 / 2.5                        |      0.38  | Yes         |          0.043 | Green        | $46.3M                    |               1.39 |
+| Monte Carlo (Student-t) | 95%          | $19.1M    | $29.1M   |         27.13 | 11 / 12.5                      |      0.657 | Yes         |          0.494 | Green        | $31.8M                    |               1.12 |
+| Monte Carlo (Student-t) | 97%          | $23.5M    | $34.4M   |         27.13 | 7 / 7.5                        |      0.851 | Yes         |          0.174 | Green        | $38.1M                    |               1.15 |
+| Monte Carlo (Student-t) | 99%          | $34.2M    | $47.8M   |         27.13 | 4 / 2.5                        |      0.38  | Yes         |          0.043 | Green        | $46.3M                    |               1.06 |
 
 How to read this table:
 - **Avg VaR / Avg ES**: the average of the daily forecasts over the test year.
 - **Kupiec p**: tests whether the breach count fits the confidence level. Below 0.05 means it does not.
 - **Clustering p**: Christoffersen test. Below 0.05 means breaches bunch together instead of being spread out.
 - **Basel zone**: Green is acceptable; Yellow and Red mean too many breaches.
-- **Actual loss / ES**: on breach days, the actual loss divided by the ES forecast. Above 1 means ES understated the loss.
+- **Actual loss / ES**: on breach days, the actual loss divided by that day's ES forecast, averaged. Above 1 means ES understated the loss.
+- **Avg ES** above is averaged over all test days. `summary.csv` also carries *Avg ES on breach days*, the average ES forecast on the breach days only, which is the like-for-like comparison against the realised loss.
 - **Runtime**: total time for all 250 daily forecasts (Monte Carlo uses 10,000 scenarios per day).
 
 ![Daily P&L against VaR](charts/var_backtest.png)

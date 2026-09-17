@@ -103,6 +103,7 @@ def summarise(result: BacktestResult, levels: tuple[float, ...]) -> pd.DataFrame
                 "Breach count OK (p>=0.05)": "Yes" if kupiec_p >= 0.05 else "No",
                 "Clustering p-value": indep_p,
                 "Basel zone": traffic_light(breaches, days, level),
+                "Avg ES on breach days ($)": hit["es_usd"].mean() if breaches else np.nan,
                 "Avg loss on breach days ($)": -hit["actual_pnl_usd"].mean() if breaches else np.nan,
                 "Actual loss / forecast ES": (-hit["actual_pnl_usd"] / hit["es_usd"]).mean() if breaches else np.nan,
             })

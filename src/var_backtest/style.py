@@ -13,6 +13,9 @@ from .backtest import METHODS
 # Categorical slots 1-3, validated colour-blind safe as a set. Each method keeps its colour in every chart.
 SERIES_COLORS = dict(zip(METHODS, ("#2a78d6", "#eb6834", "#1baf7a")))
 ACCENT = "#4a3aa7"  # slot 7, for non-method series (e.g. market-cap weights)
+# Weighting schemes are not methods, so they take their own two slots: yellow (4) and violet (7).
+# Yellow sits below 3:1 against the light surface, so anything drawn in it carries a direct label.
+WEIGHTING_COLORS = {"equal": "#eda100", "market_cap": ACCENT}
 
 INK, INK_SECONDARY, INK_MUTED = "#0b0b0b", "#52514e", "#898781"
 GRID, BASELINE, SURFACE, PNL_BAR = "#e1e0d9", "#c3c2b7", "#fcfcfb", "#c3c2b7"

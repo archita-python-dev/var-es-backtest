@@ -22,8 +22,9 @@ from matplotlib.ticker import FuncFormatter
 
 from .backtest import METHODS
 from .config import load_config
-from .style import (ACCENT, BASELINE, BLUE_RAMP, GRID, INK, INK_MUTED, INK_SECONDARY, PNL_BAR, SEQUENTIAL,
-                    SERIES_COLORS, STATUS, SURFACE, WEIGHTING_LABELS, clean_axes, headline, reserve, use_style)
+from .style import (BASELINE, BLUE_RAMP, GRID, INK, INK_MUTED, INK_SECONDARY, PNL_BAR, SEQUENTIAL,
+                    SERIES_COLORS, STATUS, SURFACE, WEIGHTING_COLORS, WEIGHTING_LABELS, clean_axes, headline,
+                    reserve, use_style)
 
 SHORT = {"Historical": "Historical", "Parametric (Normal)": "Parametric", "Monte Carlo (Student-t)": "Monte Carlo"}
 TARIFF_DATE = pd.Timestamp("2025-04-02")
@@ -81,13 +82,8 @@ def _save(fig, path: Path) -> Path:
     return path
 
 
-def _grouped_bars(ax, run: RunResults, column: str, fmt, label_pad: float, avoid: list[float] | None = None,
-                  sub_column: str | None = None, sub_fmt=None) -> None:
-    """Grouped bars per confidence level.
-
-    Value labels jump above any `avoid` line (one per group) they would hit. `sub_column` adds a
-    second, muted label above the value label.
-    """
+def _grouped_bars(ax, run: RunResults, column: str, fmt, label_pad: float, avoid: list[float] | None = None) -> None:
+    """Grouped bars per confidence level. Value labels jump above any `avoid` line (one per group) they would hit."""
     levels = _levels(run)
     x = np.arange(len(levels))
     width = 0.24
@@ -101,10 +97,6 @@ def _grouped_bars(ax, run: RunResults, column: str, fmt, label_pad: float, avoid
                 if avoid is not None and -label_pad * 4 < avoid[i] - y < label_pad * 3:
                     y = max(y, avoid[i] + label_pad)
                 ax.text(p, y, fmt(v), ha="center", va="bottom", color=INK_SECONDARY, fontsize=9)
-                if sub_column:
-                    sub = run.row(method, levels[i])[sub_column]
-                    ax.annotate("n/a" if pd.isna(sub) else sub_fmt(sub), xy=(p, y), xytext=(0, 12),
-                                textcoords="offset points", ha="center", va="bottom", color=INK_MUTED, fontsize=8.5)
     ax.set_xticks(x)
     ax.set_xlim(-0.6, len(levels) - 0.4)
     clean_axes(ax)
@@ -184,28 +176,58 @@ def chart_var_vs_es(runs: list[RunResults], path: Path, source: str) -> Path:
 
 # 3 -------------------------------------------------------------------------------------------
 def chart_es_accuracy(runs: list[RunResults], path: Path, source: str) -> Path:
-    col = "Actual loss / forecast ES"
-    fig, axes = plt.subplots(1, len(runs), figsize=(12, 5.8), sharey=True, squeeze=False)
+    """Forecast ES against the actual average loss on the days each model was breached."""
+    # ES averaged over the breach days themselves, so both marks describe the same set of days.
+    es_col, loss_col = "Avg ES on breach days ($)", "Avg loss on breach days ($)"
+    fig, axes = plt.subplots(1, len(runs), figsize=(13, 7.4), sharey=True, squeeze=False)
     axes = axes[0]
-    top = max(r.summary[col].max() for r in runs)
+    levels = _levels(runs[0])
+    xmax = max(max(r.summary[es_col].max(), r.summary[loss_col].max()) for r in runs) / 1e6
 
     for ax, run in zip(axes, runs):
-        _grouped_bars(ax, run, col, lambda v: f"{v:.2f}×", label_pad=0.03,
-                      sub_column="Avg loss on breach days ($)", sub_fmt=lambda v: f"${v / 1e6:.1f}M")
-        ax.axhline(1, color=INK, linewidth=1.4, zorder=3)
-        ax.set_xticklabels([f"{lvl} confidence" for lvl in _levels(run)], color=INK_SECONDARY)
-        ax.set_ylim(0, top * 1.3)
-        ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}×"))
-    axes[0].set_ylabel("Actual loss ÷ forecast ES, on breach days")
+        ticks, labels = [], []
+        for i, lvl in enumerate(levels):
+            base = i * 4.2
+            ax.text(0, base - 0.95, f"{lvl} confidence", color=INK, fontsize=10, fontweight="bold",
+                    ha="left", va="center", transform=ax.get_yaxis_transform())
+            for j, method in enumerate(METHODS):
+                y = base + j
+                r = run.row(method, lvl)
+                es, loss, breaches = r[es_col] / 1e6, r[loss_col] / 1e6, int(r["Breaches"])
+                color = SERIES_COLORS[method]
+                if pd.isna(loss):
+                    ax.scatter(es, y, s=80, facecolor=SURFACE, edgecolor=color, linewidth=2.2, zorder=3)
+                    ax.text(es + xmax * 0.03, y, "no breaches", va="center", color=INK_MUTED, fontsize=9)
+                else:
+                    ax.plot([es, loss], [y, y], color=color, linewidth=2.5, solid_capstyle="round", zorder=2)
+                    ax.scatter(es, y, s=80, facecolor=SURFACE, edgecolor=color, linewidth=2.2, zorder=3)
+                    ax.scatter(loss, y, s=80, color=color, edgecolor=SURFACE, linewidth=2, zorder=4)
+                    lo, hi = min(es, loss), max(es, loss)
+                    ax.text(lo - xmax * 0.02, y, f"${lo:.1f}M", va="center", ha="right", color=INK_MUTED, fontsize=8.5)
+                    ax.text(hi + xmax * 0.02, y, f"${hi:.1f}M   {loss / es:.2f}x", va="center",
+                            color=INK_SECONDARY, fontsize=9)
+                ticks.append(y)
+                labels.append(SHORT[method] + "\n" + f"{breaches} breach days")
+        ax.set_yticks(ticks, labels, color=INK_SECONDARY, fontsize=9)
+        ax.set_xlim(0, xmax * 1.3)
+        ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"${v:,.0f}M"))
+        clean_axes(ax, grid_axis="x")
+        ax.set_title(run.label, loc="left", color=INK, fontsize=11.5, fontweight="bold", pad=24)
+    axes[0].set_ylim(len(levels) * 4.2 - 1.6, -1.7)
 
     all_rows = pd.concat([r.summary.assign(w=r.label) for r in runs], ignore_index=True)
-    worst = all_rows.loc[all_rows[col].idxmax()]
-    headline(fig, f"{SHORT[worst['Method']]} ES understated tail losses the most: "
-                  f"actual losses were {worst[col]:.2f}× the forecast",
-             "Above 1× means Expected Shortfall underestimated how bad breach days really were. "
-             "Grey figures are the average actual loss on those days.", source)
-    _method_legend(fig, 0.95, [Line2D([], [], color=INK, linewidth=1.4, label="1× = forecast matched actual loss")])
-    bottom, top_frac = reserve(fig, 1.35, 0.45)
+    all_rows["plotted_ratio"] = all_rows[loss_col] / all_rows[es_col]  # same definition the chart labels use
+    worst = all_rows.loc[all_rows["plotted_ratio"].idxmax()]
+    headline(fig, f"{SHORT[worst['Method']]} ES fell furthest short: breach-day losses were "
+                  f"{worst['plotted_ratio']:.2f} times what it forecast",
+             "For each model, the ES it forecast on its own breach days against the loss actually suffered on those "
+             "same days. Breach counts differ, so each model is averaged over a different set of days.", source)
+    _method_legend(fig, 0.95, [
+        Line2D([], [], marker="o", linestyle="", markerfacecolor=SURFACE, markeredgecolor=INK_SECONDARY,
+               markeredgewidth=2, markersize=8, label="Forecast ES on those days"),
+        Line2D([], [], marker="o", linestyle="", color=INK_SECONDARY, markersize=8, label="Actual loss on breach days"),
+    ])
+    bottom, top_frac = reserve(fig, 1.5, 0.45)
     fig.tight_layout(rect=(0, bottom, 1, top_frac), w_pad=3)
     return _save(fig, path)
 
@@ -404,16 +426,16 @@ def chart_concentration(runs: list[RunResults], path: Path, source: str, level: 
         return None
     eq, mc = by_w["equal"], by_w["market_cap"]
     fig, (left, right) = plt.subplots(1, 2, figsize=(12, 5.6), gridspec_kw={"width_ratios": [1.1, 1]})
-    colors = {"equal": INK_MUTED, "market_cap": ACCENT}
+    colors = WEIGHTING_COLORS
 
     for run in (eq, mc):
         cum = run.weights["weight"].sort_values(ascending=False).cumsum().to_numpy() * 100
         n = np.arange(1, len(cum) + 1)
-        left.plot(n, cum, color=colors[run.weighting], linewidth=2, solid_capstyle="round", zorder=3)
+        left.plot(n, cum, color=colors[run.weighting], linewidth=2.8, solid_capstyle="round", zorder=3)
     mc_cum = mc.weights["weight"].sort_values(ascending=False).cumsum() * 100
     for k in (5, 10, 25):
         v = mc_cum.iloc[k - 1]
-        left.scatter(k, v, s=60, color=ACCENT, edgecolor=SURFACE, linewidth=2, zorder=4)
+        left.scatter(k, v, s=70, color=colors["market_cap"], edgecolor=SURFACE, linewidth=2, zorder=4)
         left.text(k + 2, v - 1, f"Top {k}: {v:.0f}%", color=INK, fontsize=9.5, va="top")
     left.text(62, 56, "Equal weights", color=INK_SECONDARY, fontsize=9.5, rotation=0)
     left.set_xlim(0, 101)
@@ -429,8 +451,8 @@ def chart_concentration(runs: list[RunResults], path: Path, source: str, level: 
         a, b = eq.row(method, level)["Avg VaR ($)"] / 1e6, mc.row(method, level)["Avg VaR ($)"] / 1e6
         increases.append(b / a - 1)
         right.plot([a, b], [j, j], color=GRID, linewidth=3, zorder=1)
-        right.scatter(a, j, s=90, color=INK_MUTED, edgecolor=SURFACE, linewidth=2, zorder=3)
-        right.scatter(b, j, s=90, color=ACCENT, edgecolor=SURFACE, linewidth=2, zorder=3)
+        right.scatter(a, j, s=110, color=colors["equal"], edgecolor=SURFACE, linewidth=2, zorder=3)
+        right.scatter(b, j, s=110, color=colors["market_cap"], edgecolor=SURFACE, linewidth=2, zorder=3)
         right.text(a - 0.7, j, f"${a:.1f}M", ha="right", va="center", color=INK_SECONDARY, fontsize=9.5)
         right.text(b + 0.7, j, f"${b:.1f}M  (+{b / a - 1:.0%})", ha="left", va="center", color=INK, fontsize=9.5)
     right.set_yticks(range(len(METHODS)), [SHORT[m] for m in METHODS], color=INK_SECONDARY)
@@ -444,8 +466,9 @@ def chart_concentration(runs: list[RunResults], path: Path, source: str, level: 
     headline(fig, f"Market-cap weighting puts {mc_cum.iloc[9]:.0f}% in 10 stocks and raises {level} VaR "
                   f"by {min(increases):.0%}–{max(increases):.0%}",
              "The largest holdings are mostly big tech names, so a handful of stocks drive more of the portfolio's daily swings", source)
-    handles = [Line2D([], [], color=INK_MUTED, linewidth=2, marker="o", label="Equal-weighted"),
-               Line2D([], [], color=ACCENT, linewidth=2, marker="o", label="Market-cap weighted")]
+    handles = [Line2D([], [], color=colors["equal"], linewidth=2.8, marker="o", markersize=8, label="Equal-weighted"),
+               Line2D([], [], color=colors["market_cap"], linewidth=2.8, marker="o", markersize=8,
+                      label="Market-cap weighted")]
     fig.legend(handles=handles, loc="upper left", bbox_to_anchor=(0.006, 1 - 0.95 / fig.get_figheight()),
                ncol=2, fontsize=9.5)
     bottom, top_frac = reserve(fig, 1.35, 0.45)
@@ -459,7 +482,7 @@ GALLERY = [
     ("03_monthly_breach_heatmap.png", "When breaches happened", "Breaches by month show how tightly they bunch around the tariff shock."),
     ("04_tariff_shock_zoom.png", "The tariff shock, up close", "VaR drifted down as March 2020 left the window, just before the April losses."),
     ("05_var_vs_es.png", "VaR vs Expected Shortfall", "How much further the average tail loss sits beyond VaR, per model."),
-    ("06_es_accuracy.png", "Was ES big enough?", "Average actual loss on breach days, and how it compares with the ES forecast."),
+    ("06_es_accuracy.png", "Was ES big enough?", "Forecast Expected Shortfall against the loss actually suffered on each breach day."),
     ("07_concentration_effect.png", "Equal vs market-cap weights", "Concentration in mega-caps and its effect on VaR."),
     ("08_runtime.png", "Speed", "Compute cost of each method."),
 ]
