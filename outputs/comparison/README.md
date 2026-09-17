@@ -34,7 +34,7 @@ How much further the average tail loss sits beyond VaR, per model.
 
 ## Was ES big enough?
 
-Actual breach-day losses compared with the ES forecast.
+Average actual loss on breach days, and how it compares with the ES forecast.
 
 ![Was ES big enough?](06_es_accuracy.png)
 

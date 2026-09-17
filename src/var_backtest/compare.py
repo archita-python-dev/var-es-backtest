@@ -81,8 +81,13 @@ def _save(fig, path: Path) -> Path:
     return path
 
 
-def _grouped_bars(ax, run: RunResults, column: str, fmt, label_pad: float, avoid: list[float] | None = None) -> None:
-    """Grouped bars per confidence level. Value labels jump above any `avoid` line (one per group) they would hit."""
+def _grouped_bars(ax, run: RunResults, column: str, fmt, label_pad: float, avoid: list[float] | None = None,
+                  sub_column: str | None = None, sub_fmt=None) -> None:
+    """Grouped bars per confidence level.
+
+    Value labels jump above any `avoid` line (one per group) they would hit. `sub_column` adds a
+    second, muted label above the value label.
+    """
     levels = _levels(run)
     x = np.arange(len(levels))
     width = 0.24
@@ -96,6 +101,10 @@ def _grouped_bars(ax, run: RunResults, column: str, fmt, label_pad: float, avoid
                 if avoid is not None and -label_pad * 4 < avoid[i] - y < label_pad * 3:
                     y = max(y, avoid[i] + label_pad)
                 ax.text(p, y, fmt(v), ha="center", va="bottom", color=INK_SECONDARY, fontsize=9)
+                if sub_column:
+                    sub = run.row(method, levels[i])[sub_column]
+                    ax.annotate("n/a" if pd.isna(sub) else sub_fmt(sub), xy=(p, y), xytext=(0, 12),
+                                textcoords="offset points", ha="center", va="bottom", color=INK_MUTED, fontsize=8.5)
     ax.set_xticks(x)
     ax.set_xlim(-0.6, len(levels) - 0.4)
     clean_axes(ax)
@@ -181,10 +190,11 @@ def chart_es_accuracy(runs: list[RunResults], path: Path, source: str) -> Path:
     top = max(r.summary[col].max() for r in runs)
 
     for ax, run in zip(axes, runs):
-        _grouped_bars(ax, run, col, lambda v: f"{v:.2f}×", label_pad=0.03)
+        _grouped_bars(ax, run, col, lambda v: f"{v:.2f}×", label_pad=0.03,
+                      sub_column="Avg loss on breach days ($)", sub_fmt=lambda v: f"${v / 1e6:.1f}M")
         ax.axhline(1, color=INK, linewidth=1.4, zorder=3)
         ax.set_xticklabels([f"{lvl} confidence" for lvl in _levels(run)], color=INK_SECONDARY)
-        ax.set_ylim(0, top * 1.15)
+        ax.set_ylim(0, top * 1.3)
         ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}×"))
     axes[0].set_ylabel("Actual loss ÷ forecast ES, on breach days")
 
@@ -192,7 +202,8 @@ def chart_es_accuracy(runs: list[RunResults], path: Path, source: str) -> Path:
     worst = all_rows.loc[all_rows[col].idxmax()]
     headline(fig, f"{SHORT[worst['Method']]} ES understated tail losses the most: "
                   f"actual losses were {worst[col]:.2f}× the forecast",
-             "Above 1× means Expected Shortfall underestimated how bad breach days really were", source)
+             "Above 1× means Expected Shortfall underestimated how bad breach days really were. "
+             "Grey figures are the average actual loss on those days.", source)
     _method_legend(fig, 0.95, [Line2D([], [], color=INK, linewidth=1.4, label="1× = forecast matched actual loss")])
     bottom, top_frac = reserve(fig, 1.35, 0.45)
     fig.tight_layout(rect=(0, bottom, 1, top_frac), w_pad=3)
@@ -448,7 +459,7 @@ GALLERY = [
     ("03_monthly_breach_heatmap.png", "When breaches happened", "Breaches by month show how tightly they bunch around the tariff shock."),
     ("04_tariff_shock_zoom.png", "The tariff shock, up close", "VaR drifted down as March 2020 left the window, just before the April losses."),
     ("05_var_vs_es.png", "VaR vs Expected Shortfall", "How much further the average tail loss sits beyond VaR, per model."),
-    ("06_es_accuracy.png", "Was ES big enough?", "Actual breach-day losses compared with the ES forecast."),
+    ("06_es_accuracy.png", "Was ES big enough?", "Average actual loss on breach days, and how it compares with the ES forecast."),
     ("07_concentration_effect.png", "Equal vs market-cap weights", "Concentration in mega-caps and its effect on VaR."),
     ("08_runtime.png", "Speed", "Compute cost of each method."),
 ]
