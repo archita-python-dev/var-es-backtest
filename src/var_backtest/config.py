@@ -24,6 +24,9 @@ class Config:
     mc_simulations: int
     mc_seed: int
     mc_df_bounds: tuple[float, float]
+    mc_df_method: str
+    ewma_lambda: float
+    workers: int
     cache_dir: Path
     max_filled_gaps: int
     output_dir: Path
@@ -52,6 +55,9 @@ def load_config(path: str | Path, weighting: str | None = None) -> Config:
         mc_simulations=int(raw["risk"]["mc_simulations"]),
         mc_seed=int(raw["risk"]["mc_seed"]),
         mc_df_bounds=tuple(float(b) for b in raw["risk"]["mc_df_bounds"]),
+        mc_df_method=str(raw["risk"].get("mc_df_method", "moments")),
+        ewma_lambda=float(raw["risk"].get("ewma_lambda", 0.94)),
+        workers=int(raw.get("compute", {}).get("workers", 1)),
         cache_dir=root / raw["data"]["cache_dir"],
         max_filled_gaps=int(raw["data"]["max_filled_gaps"]),
         output_dir=root / raw["output"]["output_dir"],
@@ -75,3 +81,9 @@ def _validate(cfg: Config) -> None:
         raise ValueError("fewer unique candidate tickers than universe_size")
     if cfg.mc_df_bounds[0] <= 2:
         raise ValueError("Student-t degrees of freedom must stay above 2 (finite variance)")
+    if cfg.mc_df_method not in ("moments", "mle"):
+        raise ValueError("mc_df_method must be 'moments' or 'mle'")
+    if not 0 < cfg.ewma_lambda < 1:
+        raise ValueError("ewma_lambda must be between 0 and 1")
+    if cfg.workers < 1:
+        raise ValueError("workers must be at least 1")

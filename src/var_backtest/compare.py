@@ -26,7 +26,9 @@ from .style import (BASELINE, BLUE_RAMP, GRID, INK, INK_MUTED, INK_SECONDARY, PN
                     SERIES_COLORS, STATUS, SURFACE, WEIGHTING_COLORS, WEIGHTING_LABELS, clean_axes, headline,
                     reserve, use_style)
 
-SHORT = {"Historical": "Historical", "Parametric (Normal)": "Parametric", "Monte Carlo (Student-t)": "Monte Carlo"}
+SHORT = {"Historical": "Historical", "Parametric (Normal)": "Parametric (Normal)",
+         "Parametric (t + EWMA)": "Parametric (t+EWMA)", "Monte Carlo (Student-t)": "Monte Carlo"}
+ROW_SPAN = len(METHODS) + 1.2  # vertical room for one confidence-level group in the dumbbell charts
 TARIFF_DATE = pd.Timestamp("2025-04-02")
 COVID_LOW = pd.Timestamp("2020-03-23")
 
@@ -38,6 +40,7 @@ class RunResults:
     daily: pd.DataFrame
     monthly: pd.DataFrame
     weights: pd.DataFrame
+    profile: pd.DataFrame
 
     @property
     def label(self) -> str:
@@ -60,6 +63,7 @@ def load_runs(output_dir: Path) -> list[RunResults]:
             daily=pd.read_csv(folder / "daily_forecasts.csv", parse_dates=["date", "window_start"]),
             monthly=pd.read_csv(folder / "monthly_breaches.csv", index_col="month"),
             weights=pd.read_csv(folder / "weights.csv", index_col=0),
+            profile=pd.read_csv(folder / "compute_profile.csv"),
         ))
     if not runs:
         raise FileNotFoundError(f"no backtest outputs in {output_dir}; run `python -m var_backtest` first")
@@ -86,10 +90,11 @@ def _grouped_bars(ax, run: RunResults, column: str, fmt, label_pad: float, avoid
     """Grouped bars per confidence level. Value labels jump above any `avoid` line (one per group) they would hit."""
     levels = _levels(run)
     x = np.arange(len(levels))
-    width = 0.24
+    n = len(METHODS)
+    width = 0.72 / n
     for j, method in enumerate(METHODS):
         values = [run.row(method, lvl)[column] for lvl in levels]
-        pos = x + (j - 1) * (width + 0.03)
+        pos = x + (j - (n - 1) / 2) * (width + 0.03)
         ax.bar(pos, values, width=width, color=SERIES_COLORS[method], zorder=2)
         for i, (p, v) in enumerate(zip(pos, values)):
             if pd.notna(v):
@@ -105,7 +110,7 @@ def _grouped_bars(ax, run: RunResults, column: str, fmt, label_pad: float, avoid
 
 # 1 -------------------------------------------------------------------------------------------
 def chart_breaches(runs: list[RunResults], path: Path, source: str) -> Path:
-    fig, axes = plt.subplots(1, len(runs), figsize=(12, 5.8), sharey=True, squeeze=False)
+    fig, axes = plt.subplots(1, len(runs), figsize=(13, 6.2), sharey=True, squeeze=False)
     axes = axes[0]
     top = max(max(r.summary["Breaches"].max(), r.summary["Expected breaches"].max()) for r in runs)
 
@@ -132,7 +137,7 @@ def chart_breaches(runs: list[RunResults], path: Path, source: str) -> Path:
 
 # 2 -------------------------------------------------------------------------------------------
 def chart_var_vs_es(runs: list[RunResults], path: Path, source: str) -> Path:
-    fig, axes = plt.subplots(1, len(runs), figsize=(12, 6.8), sharey=True, squeeze=False)
+    fig, axes = plt.subplots(1, len(runs), figsize=(13, 8.4), sharey=True, squeeze=False)
     axes = axes[0]
     levels = _levels(runs[0])
     xmax = max(r.summary["Avg ES ($)"].max() for r in runs) / 1e6
@@ -140,7 +145,7 @@ def chart_var_vs_es(runs: list[RunResults], path: Path, source: str) -> Path:
     for ax, run in zip(axes, runs):
         ticks, labels = [], []
         for i, lvl in enumerate(levels):
-            base = i * 4.2
+            base = i * ROW_SPAN
             ax.text(0, base - 0.85, f"{lvl} confidence", color=INK, fontsize=10, fontweight="bold",
                     ha="left", va="center", transform=ax.get_yaxis_transform())
             for j, method in enumerate(METHODS):
@@ -160,7 +165,7 @@ def chart_var_vs_es(runs: list[RunResults], path: Path, source: str) -> Path:
         ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"${v:,.0f}M"))
         clean_axes(ax, grid_axis="x")
         ax.set_title(run.label, loc="left", color=INK, fontsize=11.5, fontweight="bold", pad=22)
-    axes[0].set_ylim(len(levels) * 4.2 - 1.6, -1.6)
+    axes[0].set_ylim(len(levels) * ROW_SPAN - 1.6, -1.6)
 
     headline(fig, "How far the average tail loss (ES) sits beyond VaR",
              "Average daily forecast over 2025. The longer the line, the heavier the tail the model expects.", source)
@@ -179,7 +184,7 @@ def chart_es_accuracy(runs: list[RunResults], path: Path, source: str) -> Path:
     """Forecast ES against the actual average loss on the days each model was breached."""
     # ES averaged over the breach days themselves, so both marks describe the same set of days.
     es_col, loss_col = "Avg ES on breach days ($)", "Avg loss on breach days ($)"
-    fig, axes = plt.subplots(1, len(runs), figsize=(13, 7.4), sharey=True, squeeze=False)
+    fig, axes = plt.subplots(1, len(runs), figsize=(13.5, 9), sharey=True, squeeze=False)
     axes = axes[0]
     levels = _levels(runs[0])
     xmax = max(max(r.summary[es_col].max(), r.summary[loss_col].max()) for r in runs) / 1e6
@@ -187,7 +192,7 @@ def chart_es_accuracy(runs: list[RunResults], path: Path, source: str) -> Path:
     for ax, run in zip(axes, runs):
         ticks, labels = [], []
         for i, lvl in enumerate(levels):
-            base = i * 4.2
+            base = i * ROW_SPAN
             ax.text(0, base - 0.95, f"{lvl} confidence", color=INK, fontsize=10, fontweight="bold",
                     ha="left", va="center", transform=ax.get_yaxis_transform())
             for j, method in enumerate(METHODS):
@@ -213,7 +218,7 @@ def chart_es_accuracy(runs: list[RunResults], path: Path, source: str) -> Path:
         ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"${v:,.0f}M"))
         clean_axes(ax, grid_axis="x")
         ax.set_title(run.label, loc="left", color=INK, fontsize=11.5, fontweight="bold", pad=24)
-    axes[0].set_ylim(len(levels) * 4.2 - 1.6, -1.7)
+    axes[0].set_ylim(len(levels) * ROW_SPAN - 1.6, -1.7)
 
     all_rows = pd.concat([r.summary.assign(w=r.label) for r in runs], ignore_index=True)
     all_rows["plotted_ratio"] = all_rows[loss_col] / all_rows[es_col]  # same definition the chart labels use
@@ -236,7 +241,7 @@ def chart_es_accuracy(runs: list[RunResults], path: Path, source: str) -> Path:
 def chart_scorecard(runs: list[RunResults], path: Path, source: str) -> Path:
     levels = _levels(runs[0])
     n_rows = len(METHODS) * len(levels)
-    fig = plt.figure(figsize=(13, 1.9 + 0.42 * n_rows + 0.9))
+    fig = plt.figure(figsize=(13.5, 1.9 + 0.42 * n_rows + 0.9))
     bottom, top_frac = reserve(fig, 1.15, 0.45)
     ax = fig.add_axes((0.012, bottom, 0.976, top_frac - bottom))
     ax.set_axis_off()
@@ -271,7 +276,7 @@ def chart_scorecard(runs: list[RunResults], path: Path, source: str) -> Path:
     for lvl in levels:
         for method in METHODS:
             ax.plot(0.004, y, marker="s", markersize=8, color=SERIES_COLORS[method])
-            ax.text(0.018, y, SHORT[method], va="center", color=INK, fontsize=10)
+            ax.text(0.018, y, SHORT[method], va="center", color=INK, fontsize=9.5)
             ax.text(0.13, y, lvl, va="center", color=INK, fontsize=10)
             for gx, run in zip(group_x, runs):
                 r = run.row(method, lvl)
@@ -309,6 +314,7 @@ def chart_tariff_zoom(runs: list[RunResults], path: Path, source: str,
             m = d[d["method"] == method].set_index("date")["var_usd"] / 1e6
             ax.plot(m.index, -m.values, color=SERIES_COLORS[method], linewidth=2, solid_capstyle="round", zorder=3)
 
+        floor = min(pnl.min(), -d["var_usd"].max() / 1e6)  # keep a reacting VaR line inside the panel
         worst_day = pnl.idxmin()
         ax.annotate(f"−${-pnl.min():.1f}M on {worst_day:%-d %b}", xy=(worst_day, pnl.min()),
                     xytext=(18, 0), textcoords="offset points", va="center", color=INK, fontsize=9.5,
@@ -321,7 +327,7 @@ def chart_tariff_zoom(runs: list[RunResults], path: Path, source: str,
             if pd.notna(date):
                 ax.axvline(date, color=INK_MUTED, linewidth=1, zorder=0)
                 ax.text(date, ymax, f" {text}", color=INK_SECONDARY, fontsize=9, va="top")
-        ax.set_ylim(pnl.min() * 1.15, ymax)
+        ax.set_ylim(floor * 1.12, ymax)
         ax.axhline(0, color=BASELINE, linewidth=1, zorder=2)
         clean_axes(ax)
         ax.set_ylabel("$ millions")
@@ -349,7 +355,7 @@ def chart_tariff_zoom(runs: list[RunResults], path: Path, source: str,
 
 # 6 -------------------------------------------------------------------------------------------
 def chart_monthly_heatmap(runs: list[RunResults], path: Path, source: str) -> Path:
-    fig, axes = plt.subplots(1, len(runs), figsize=(12, 7.2), sharey=True, squeeze=False)
+    fig, axes = plt.subplots(1, len(runs), figsize=(14.5, 7.4), sharey=True, squeeze=False)
     axes = axes[0]
     vmax = max(int(r.monthly.to_numpy().max()) for r in runs)
     bounds = np.arange(-0.5, max(vmax, len(BLUE_RAMP) - 1) + 1.5)
@@ -390,31 +396,42 @@ def chart_monthly_heatmap(runs: list[RunResults], path: Path, source: str) -> Pa
 
 # 7 -------------------------------------------------------------------------------------------
 def chart_runtime(runs: list[RunResults], path: Path, source: str, days: int, sims: int) -> Path:
-    fig, ax = plt.subplots(figsize=(12, 1.6 + 0.5 * len(METHODS) * len(runs) + 0.4))
+    """Cost per model, the inputs they share, and the wall clock the thread pool actually took."""
+    fig, ax = plt.subplots(figsize=(13, 1.9 + 0.42 * (len(METHODS) + 1) * len(runs) + 0.6))
     y, ticks, labels = 0, [], []
-    for method in METHODS:
-        for run in runs:
-            t = run.summary.loc[run.summary["Method"] == method, "Runtime, all days (s)"].iloc[0]
-            ax.barh(y, t, height=0.62, color=SERIES_COLORS[method], zorder=2)
-            ax.text(t * 1.12, y, f"{t:.2f} s", va="center", color=INK_SECONDARY, fontsize=9.5)
+    walls = []
+    for run in runs:
+        profile = run.profile
+        walls.append(profile[profile["kind"] == "wall"].iloc[0])
+        for _, row in profile[profile["kind"] != "wall"].iterrows():
+            color = SERIES_COLORS.get(row["stage"], PNL_BAR)
+            ax.barh(y, row["seconds"], height=0.62, color=color, zorder=2)
+            ax.text(row["seconds"] * 1.12, y, f"{row['seconds']:.2f} s", va="center",
+                    color=INK_SECONDARY, fontsize=9.5)
+            label = SHORT.get(row["stage"], "Shared inputs")
             ticks.append(y)
-            labels.append(f"{SHORT[method]}  ·  {run.label.split()[0].lower()}")
+            labels.append(f"{label}  ·  {run.label.split()[0].lower()}")
             y += 1
-        y += 0.5
+        y += 0.6
     ax.set_xscale("log")
     ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
-    ax.set_yticks(ticks, labels, color=INK_SECONDARY)
+    ax.set_yticks(ticks, labels, color=INK_SECONDARY, fontsize=9)
     ax.invert_yaxis()
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g} s"))
     clean_axes(ax, grid_axis="x")
     ax.spines["bottom"].set_visible(False)
     ax.set_xlim(right=ax.get_xlim()[1] * 3)
 
-    r0 = runs[0].summary.groupby("Method")["Runtime, all days (s)"].first()
-    headline(fig, f"Monte Carlo takes about {r0[METHODS[2]] / r0[METHODS[0]]:.0f}× longer than historical simulation",
-             f"Total time for {days} daily forecasts at all confidence levels (log scale). "
-             f"Monte Carlo simulates {sims:,} scenarios for 100 stocks each day.", source)
-    bottom, top_frac = reserve(fig, 1.05, 0.45)
+    profile = runs[0].profile.set_index("stage")["seconds"]
+    slowest = profile[[m for m in METHODS if m in profile.index]].idxmax()
+    ratio = profile[slowest] / profile[METHODS[0]]
+    wall = walls[0]
+    headline(fig, f"{SHORT[slowest]} costs about {ratio:.0f} times historical simulation, "
+                  f"but all {days} days still finish in {wall['seconds']:.1f}s",
+             f"Model cost excludes the mean and covariance every model shares (shown separately). "
+             f"{wall['stage']}: forecast days run in parallel, so the bars below add up to more than the "
+             f"elapsed time. Monte Carlo simulates {sims:,} scenarios per day.", source)
+    bottom, top_frac = reserve(fig, 1.15, 0.45)
     fig.tight_layout(rect=(0, bottom, 1, top_frac))
     return _save(fig, path)
 
@@ -491,11 +508,12 @@ GALLERY = [
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="config.toml")
+    parser.add_argument("--out", default="comparison", help="folder under outputs/ to write the charts to")
     args = parser.parse_args(argv)
 
     cfg = load_config(args.config)
     runs = load_runs(cfg.output_dir)
-    out = cfg.output_dir / "comparison"
+    out = cfg.output_dir / args.out
     out.mkdir(parents=True, exist_ok=True)
     use_style()
 
@@ -513,7 +531,9 @@ def main(argv: list[str] | None = None) -> int:
         "07_concentration_effect.png": lambda p: chart_concentration(runs, p, source),
         "08_runtime.png": lambda p: chart_runtime(runs, p, source, days, cfg.mc_simulations),
     }
-    lines = ["# Comparison charts", "", f"Generated from `{cfg.output_dir.name}/` by `python -m var_backtest.compare`.", ""]
+    lines = ["# Comparison charts", "",
+             f"Generated from `{cfg.output_dir.name}/` by `python -m var_backtest.compare --out {args.out}`.",
+             f"Models compared: {', '.join(METHODS)}.", ""]
     for name, title, caption in GALLERY:
         if builders[name](out / name) is None:
             continue

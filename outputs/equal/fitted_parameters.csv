@@ -1,0 +1,501 @@
+date,method,t_df,ewma_sigma
+2025-01-02,Parametric (t + EWMA),8.3646,0.0082
+2025-01-02,Monte Carlo (Student-t),4.3886,
+2025-01-03,Parametric (t + EWMA),8.3546,0.0079
+2025-01-03,Monte Carlo (Student-t),4.3882,
+2025-01-06,Parametric (t + EWMA),8.3851,0.0081
+2025-01-06,Monte Carlo (Student-t),4.3874,
+2025-01-07,Parametric (t + EWMA),8.3851,0.0078
+2025-01-07,Monte Carlo (Student-t),4.3874,
+2025-01-08,Parametric (t + EWMA),8.3936,0.0077
+2025-01-08,Monte Carlo (Student-t),4.3874,
+2025-01-10,Parametric (t + EWMA),8.3823,0.0075
+2025-01-10,Monte Carlo (Student-t),4.387,
+2025-01-13,Parametric (t + EWMA),8.4658,0.0082
+2025-01-13,Monte Carlo (Student-t),4.3886,
+2025-01-14,Parametric (t + EWMA),8.4683,0.008
+2025-01-14,Monte Carlo (Student-t),4.3886,
+2025-01-15,Parametric (t + EWMA),8.4714,0.0079
+2025-01-15,Monte Carlo (Student-t),4.3887,
+2025-01-16,Parametric (t + EWMA),8.4986,0.0085
+2025-01-16,Monte Carlo (Student-t),4.3891,
+2025-01-17,Parametric (t + EWMA),8.4902,0.0083
+2025-01-17,Monte Carlo (Student-t),4.3888,
+2025-01-21,Parametric (t + EWMA),8.519,0.0083
+2025-01-21,Monte Carlo (Student-t),4.3894,
+2025-01-22,Parametric (t + EWMA),8.5342,0.0086
+2025-01-22,Monte Carlo (Student-t),4.3896,
+2025-01-23,Parametric (t + EWMA),8.5219,0.0084
+2025-01-23,Monte Carlo (Student-t),4.3892,
+2025-01-24,Parametric (t + EWMA),8.523,0.0084
+2025-01-24,Monte Carlo (Student-t),4.389,
+2025-01-27,Parametric (t + EWMA),8.4255,0.0082
+2025-01-27,Monte Carlo (Student-t),4.3815,
+2025-01-28,Parametric (t + EWMA),8.3713,0.0079
+2025-01-28,Monte Carlo (Student-t),4.3759,
+2025-01-29,Parametric (t + EWMA),8.3721,0.0077
+2025-01-29,Monte Carlo (Student-t),4.3757,
+2025-01-30,Parametric (t + EWMA),8.3623,0.0075
+2025-01-30,Monte Carlo (Student-t),4.3753,
+2025-01-31,Parametric (t + EWMA),8.3625,0.0075
+2025-01-31,Monte Carlo (Student-t),4.3751,
+2025-02-03,Parametric (t + EWMA),8.3353,0.0073
+2025-02-03,Monte Carlo (Student-t),4.37,
+2025-02-04,Parametric (t + EWMA),8.3052,0.0071
+2025-02-04,Monte Carlo (Student-t),4.3671,
+2025-02-05,Parametric (t + EWMA),8.268,0.0069
+2025-02-05,Monte Carlo (Student-t),4.3618,
+2025-02-06,Parametric (t + EWMA),8.2377,0.0069
+2025-02-06,Monte Carlo (Student-t),4.3579,
+2025-02-07,Parametric (t + EWMA),8.2239,0.0067
+2025-02-07,Monte Carlo (Student-t),4.3568,
+2025-02-10,Parametric (t + EWMA),8.2745,0.0067
+2025-02-10,Monte Carlo (Student-t),4.3548,
+2025-02-11,Parametric (t + EWMA),8.2563,0.0067
+2025-02-11,Monte Carlo (Student-t),4.3489,
+2025-02-12,Parametric (t + EWMA),8.2105,0.0065
+2025-02-12,Monte Carlo (Student-t),4.3426,
+2025-02-13,Parametric (t + EWMA),8.2054,0.0064
+2025-02-13,Monte Carlo (Student-t),4.361,
+2025-02-14,Parametric (t + EWMA),8.1912,0.0065
+2025-02-14,Monte Carlo (Student-t),4.3848,
+2025-02-18,Parametric (t + EWMA),8.1588,0.0063
+2025-02-18,Monte Carlo (Student-t),4.6534,
+2025-02-19,Parametric (t + EWMA),8.1432,0.0063
+2025-02-19,Monte Carlo (Student-t),4.6581,
+2025-02-20,Parametric (t + EWMA),8.146,0.0062
+2025-02-20,Monte Carlo (Student-t),4.6554,
+2025-02-21,Parametric (t + EWMA),8.1364,0.0061
+2025-02-21,Monte Carlo (Student-t),4.6476,
+2025-02-24,Parametric (t + EWMA),8.1817,0.0067
+2025-02-24,Monte Carlo (Student-t),4.6434,
+2025-02-25,Parametric (t + EWMA),8.1514,0.0065
+2025-02-25,Monte Carlo (Student-t),5.3393,
+2025-02-26,Parametric (t + EWMA),8.1537,0.0063
+2025-02-26,Monte Carlo (Student-t),5.3331,
+2025-02-27,Parametric (t + EWMA),8.1371,0.0061
+2025-02-27,Monte Carlo (Student-t),5.5366,
+2025-02-28,Parametric (t + EWMA),8.1676,0.0063
+2025-02-28,Monte Carlo (Student-t),5.5293,
+2025-03-03,Parametric (t + EWMA),8.2004,0.0072
+2025-03-03,Monte Carlo (Student-t),5.5464,
+2025-03-04,Parametric (t + EWMA),8.2354,0.0074
+2025-03-04,Monte Carlo (Student-t),5.5402,
+2025-03-05,Parametric (t + EWMA),8.2817,0.0081
+2025-03-05,Monte Carlo (Student-t),5.5473,
+2025-03-06,Parametric (t + EWMA),8.2882,0.0082
+2025-03-06,Monte Carlo (Student-t),5.5478,
+2025-03-07,Parametric (t + EWMA),8.3161,0.0088
+2025-03-07,Monte Carlo (Student-t),6.3672,
+2025-03-10,Parametric (t + EWMA),8.3363,0.0086
+2025-03-10,Monte Carlo (Student-t),6.369,
+2025-03-11,Parametric (t + EWMA),8.3721,0.01
+2025-03-11,Monte Carlo (Student-t),6.3899,
+2025-03-12,Parametric (t + EWMA),8.3876,0.01
+2025-03-12,Monte Carlo (Student-t),6.3946,
+2025-03-13,Parametric (t + EWMA),8.3762,0.0097
+2025-03-13,Monte Carlo (Student-t),6.3905,
+2025-03-14,Parametric (t + EWMA),8.4017,0.0097
+2025-03-14,Monte Carlo (Student-t),6.39,
+2025-03-17,Parametric (t + EWMA),8.4478,0.0105
+2025-03-17,Monte Carlo (Student-t),6.37,
+2025-03-18,Parametric (t + EWMA),8.4561,0.0105
+2025-03-18,Monte Carlo (Student-t),6.3671,
+2025-03-19,Parametric (t + EWMA),8.4601,0.0103
+2025-03-19,Monte Carlo (Student-t),6.3683,
+2025-03-20,Parametric (t + EWMA),8.4533,0.0102
+2025-03-20,Monte Carlo (Student-t),6.3663,
+2025-03-21,Parametric (t + EWMA),8.4492,0.0099
+2025-03-21,Monte Carlo (Student-t),6.3471,
+2025-03-24,Parametric (t + EWMA),8.4514,0.0096
+2025-03-24,Monte Carlo (Student-t),6.3337,
+2025-03-25,Parametric (t + EWMA),8.4801,0.01
+2025-03-25,Monte Carlo (Student-t),6.3343,
+2025-03-26,Parametric (t + EWMA),8.4694,0.0097
+2025-03-26,Monte Carlo (Student-t),6.3305,
+2025-03-27,Parametric (t + EWMA),8.4718,0.0095
+2025-03-27,Monte Carlo (Student-t),6.3305,
+2025-03-28,Parametric (t + EWMA),8.4753,0.0092
+2025-03-28,Monte Carlo (Student-t),6.3155,
+2025-03-31,Parametric (t + EWMA),8.5351,0.0098
+2025-03-31,Monte Carlo (Student-t),6.3143,
+2025-04-01,Parametric (t + EWMA),8.5358,0.0097
+2025-04-01,Monte Carlo (Student-t),6.3019,
+2025-04-02,Parametric (t + EWMA),8.5127,0.0094
+2025-04-02,Monte Carlo (Student-t),6.2849,
+2025-04-03,Parametric (t + EWMA),8.5047,0.0092
+2025-04-03,Monte Carlo (Student-t),6.2824,
+2025-04-04,Parametric (t + EWMA),7.9322,0.0136
+2025-04-04,Monte Carlo (Student-t),6.21,
+2025-04-07,Parametric (t + EWMA),7.4985,0.0204
+2025-04-07,Monte Carlo (Student-t),5.7021,
+2025-04-08,Parametric (t + EWMA),7.4986,0.0198
+2025-04-08,Monte Carlo (Student-t),5.6959,
+2025-04-09,Parametric (t + EWMA),7.5089,0.0195
+2025-04-09,Monte Carlo (Student-t),5.6974,
+2025-04-10,Parametric (t + EWMA),7.2888,0.0282
+2025-04-10,Monte Carlo (Student-t),4.9973,
+2025-04-11,Parametric (t + EWMA),7.3033,0.0285
+2025-04-11,Monte Carlo (Student-t),5.007,
+2025-04-14,Parametric (t + EWMA),7.2989,0.0279
+2025-04-14,Monte Carlo (Student-t),4.9978,
+2025-04-15,Parametric (t + EWMA),7.2983,0.0271
+2025-04-15,Monte Carlo (Student-t),4.9966,
+2025-04-16,Parametric (t + EWMA),7.2987,0.0263
+2025-04-16,Monte Carlo (Student-t),4.9967,
+2025-04-17,Parametric (t + EWMA),7.3006,0.0259
+2025-04-17,Monte Carlo (Student-t),5.0016,
+2025-04-21,Parametric (t + EWMA),7.2927,0.0251
+2025-04-21,Monte Carlo (Student-t),4.9848,
+2025-04-22,Parametric (t + EWMA),7.3031,0.0249
+2025-04-22,Monte Carlo (Student-t),4.9915,
+2025-04-23,Parametric (t + EWMA),7.3098,0.0248
+2025-04-23,Monte Carlo (Student-t),4.9994,
+2025-04-24,Parametric (t + EWMA),7.3043,0.0243
+2025-04-24,Monte Carlo (Student-t),5.0014,
+2025-04-25,Parametric (t + EWMA),7.3007,0.024
+2025-04-25,Monte Carlo (Student-t),5.0053,
+2025-04-28,Parametric (t + EWMA),7.3016,0.0232
+2025-04-28,Monte Carlo (Student-t),4.9973,
+2025-04-29,Parametric (t + EWMA),7.2997,0.0225
+2025-04-29,Monte Carlo (Student-t),4.9967,
+2025-04-30,Parametric (t + EWMA),7.2998,0.0219
+2025-04-30,Monte Carlo (Student-t),4.9969,
+2025-05-01,Parametric (t + EWMA),7.2926,0.0213
+2025-05-01,Monte Carlo (Student-t),4.9958,
+2025-05-02,Parametric (t + EWMA),7.2934,0.0206
+2025-05-02,Monte Carlo (Student-t),4.996,
+2025-05-05,Parametric (t + EWMA),7.3078,0.0204
+2025-05-05,Monte Carlo (Student-t),4.9978,
+2025-05-06,Parametric (t + EWMA),7.2966,0.0198
+2025-05-06,Monte Carlo (Student-t),4.9892,
+2025-05-07,Parametric (t + EWMA),7.2943,0.0193
+2025-05-07,Monte Carlo (Student-t),4.9899,
+2025-05-08,Parametric (t + EWMA),7.2874,0.0188
+2025-05-08,Monte Carlo (Student-t),4.9894,
+2025-05-09,Parametric (t + EWMA),7.2863,0.0183
+2025-05-09,Monte Carlo (Student-t),4.9879,
+2025-05-12,Parametric (t + EWMA),7.291,0.0177
+2025-05-12,Monte Carlo (Student-t),5.0758,
+2025-05-13,Parametric (t + EWMA),7.3101,0.0187
+2025-05-13,Monte Carlo (Student-t),5.0828,
+2025-05-14,Parametric (t + EWMA),7.3031,0.0181
+2025-05-14,Monte Carlo (Student-t),5.0815,
+2025-05-15,Parametric (t + EWMA),7.2986,0.0176
+2025-05-15,Monte Carlo (Student-t),5.0809,
+2025-05-16,Parametric (t + EWMA),7.2995,0.0172
+2025-05-16,Monte Carlo (Student-t),5.0809,
+2025-05-19,Parametric (t + EWMA),7.3075,0.0168
+2025-05-19,Monte Carlo (Student-t),5.0772,
+2025-05-20,Parametric (t + EWMA),7.3051,0.0163
+2025-05-20,Monte Carlo (Student-t),5.0764,
+2025-05-21,Parametric (t + EWMA),7.2991,0.0159
+2025-05-21,Monte Carlo (Student-t),5.0753,
+2025-05-22,Parametric (t + EWMA),7.3131,0.016
+2025-05-22,Monte Carlo (Student-t),5.0812,
+2025-05-23,Parametric (t + EWMA),7.3153,0.0156
+2025-05-23,Monte Carlo (Student-t),5.0817,
+2025-05-27,Parametric (t + EWMA),7.2872,0.0151
+2025-05-27,Monte Carlo (Student-t),5.0614,
+2025-05-28,Parametric (t + EWMA),7.2914,0.0153
+2025-05-28,Monte Carlo (Student-t),5.0661,
+2025-05-29,Parametric (t + EWMA),7.2875,0.0149
+2025-05-29,Monte Carlo (Student-t),5.0655,
+2025-05-30,Parametric (t + EWMA),7.2842,0.0145
+2025-05-30,Monte Carlo (Student-t),5.0617,
+2025-06-02,Parametric (t + EWMA),7.2866,0.014
+2025-06-02,Monte Carlo (Student-t),5.058,
+2025-06-03,Parametric (t + EWMA),7.2864,0.0136
+2025-06-03,Monte Carlo (Student-t),5.0576,
+2025-06-04,Parametric (t + EWMA),7.2799,0.0133
+2025-06-04,Monte Carlo (Student-t),5.0568,
+2025-06-05,Parametric (t + EWMA),7.2734,0.0129
+2025-06-05,Monte Carlo (Student-t),5.0556,
+2025-06-06,Parametric (t + EWMA),7.2678,0.0125
+2025-06-06,Monte Carlo (Student-t),5.0544,
+2025-06-09,Parametric (t + EWMA),7.2733,0.0124
+2025-06-09,Monte Carlo (Student-t),5.0502,
+2025-06-10,Parametric (t + EWMA),7.2693,0.012
+2025-06-10,Monte Carlo (Student-t),5.0489,
+2025-06-11,Parametric (t + EWMA),7.2661,0.0117
+2025-06-11,Monte Carlo (Student-t),5.0461,
+2025-06-12,Parametric (t + EWMA),7.2602,0.0114
+2025-06-12,Monte Carlo (Student-t),5.0449,
+2025-06-13,Parametric (t + EWMA),7.2534,0.0111
+2025-06-13,Monte Carlo (Student-t),5.0438,
+2025-06-16,Parametric (t + EWMA),7.2689,0.0111
+2025-06-16,Monte Carlo (Student-t),5.0408,
+2025-06-17,Parametric (t + EWMA),7.2701,0.0109
+2025-06-17,Monte Carlo (Student-t),5.0415,
+2025-06-18,Parametric (t + EWMA),7.2844,0.0108
+2025-06-18,Monte Carlo (Student-t),5.0436,
+2025-06-20,Parametric (t + EWMA),7.2782,0.0105
+2025-06-20,Monte Carlo (Student-t),5.0424,
+2025-06-23,Parametric (t + EWMA),7.2924,0.0102
+2025-06-23,Monte Carlo (Student-t),5.0436,
+2025-06-24,Parametric (t + EWMA),7.291,0.0101
+2025-06-24,Monte Carlo (Student-t),5.0434,
+2025-06-25,Parametric (t + EWMA),7.2972,0.0103
+2025-06-25,Monte Carlo (Student-t),5.045,
+2025-06-26,Parametric (t + EWMA),7.2928,0.01
+2025-06-26,Monte Carlo (Student-t),5.044,
+2025-06-27,Parametric (t + EWMA),7.2889,0.0099
+2025-06-27,Monte Carlo (Student-t),5.0436,
+2025-06-30,Parametric (t + EWMA),7.2917,0.0096
+2025-06-30,Monte Carlo (Student-t),5.042,
+2025-07-01,Parametric (t + EWMA),7.2944,0.0095
+2025-07-01,Monte Carlo (Student-t),5.0427,
+2025-07-02,Parametric (t + EWMA),7.2883,0.0092
+2025-07-02,Monte Carlo (Student-t),5.0417,
+2025-07-03,Parametric (t + EWMA),7.2812,0.009
+2025-07-03,Monte Carlo (Student-t),5.0405,
+2025-07-07,Parametric (t + EWMA),7.3039,0.0088
+2025-07-07,Monte Carlo (Student-t),5.0434,
+2025-07-08,Parametric (t + EWMA),7.3182,0.0088
+2025-07-08,Monte Carlo (Student-t),5.0449,
+2025-07-09,Parametric (t + EWMA),7.3109,0.0085
+2025-07-09,Monte Carlo (Student-t),5.0437,
+2025-07-10,Parametric (t + EWMA),7.3036,0.0083
+2025-07-10,Monte Carlo (Student-t),5.0424,
+2025-07-11,Parametric (t + EWMA),7.3045,0.0081
+2025-07-11,Monte Carlo (Student-t),5.0425,
+2025-07-14,Parametric (t + EWMA),7.3071,0.008
+2025-07-14,Monte Carlo (Student-t),5.0415,
+2025-07-15,Parametric (t + EWMA),7.3063,0.0078
+2025-07-15,Monte Carlo (Student-t),5.0414,
+2025-07-16,Parametric (t + EWMA),7.3196,0.0078
+2025-07-16,Monte Carlo (Student-t),5.0422,
+2025-07-17,Parametric (t + EWMA),7.3146,0.0077
+2025-07-17,Monte Carlo (Student-t),5.0413,
+2025-07-18,Parametric (t + EWMA),7.3146,0.0075
+2025-07-18,Monte Carlo (Student-t),5.0412,
+2025-07-21,Parametric (t + EWMA),7.3277,0.0073
+2025-07-21,Monte Carlo (Student-t),5.0436,
+2025-07-22,Parametric (t + EWMA),7.3277,0.0071
+2025-07-22,Monte Carlo (Student-t),5.0436,
+2025-07-23,Parametric (t + EWMA),7.3215,0.0069
+2025-07-23,Monte Carlo (Student-t),5.0424,
+2025-07-24,Parametric (t + EWMA),7.3219,0.0069
+2025-07-24,Monte Carlo (Student-t),5.042,
+2025-07-25,Parametric (t + EWMA),7.3144,0.0067
+2025-07-25,Monte Carlo (Student-t),5.0404,
+2025-07-28,Parametric (t + EWMA),7.3186,0.0065
+2025-07-28,Monte Carlo (Student-t),5.041,
+2025-07-29,Parametric (t + EWMA),7.3152,0.0064
+2025-07-29,Monte Carlo (Student-t),5.0401,
+2025-07-30,Parametric (t + EWMA),7.3105,0.0062
+2025-07-30,Monte Carlo (Student-t),5.039,
+2025-07-31,Parametric (t + EWMA),7.3084,0.006
+2025-07-31,Monte Carlo (Student-t),5.038,
+2025-08-01,Parametric (t + EWMA),7.3461,0.0067
+2025-08-01,Monte Carlo (Student-t),5.0418,
+2025-08-04,Parametric (t + EWMA),7.3938,0.007
+2025-08-04,Monte Carlo (Student-t),5.0303,
+2025-08-05,Parametric (t + EWMA),7.4079,0.0073
+2025-08-05,Monte Carlo (Student-t),5.0318,
+2025-08-06,Parametric (t + EWMA),7.4096,0.0072
+2025-08-06,Monte Carlo (Student-t),5.0312,
+2025-08-07,Parametric (t + EWMA),7.4035,0.007
+2025-08-07,Monte Carlo (Student-t),5.0301,
+2025-08-08,Parametric (t + EWMA),7.3979,0.0068
+2025-08-08,Monte Carlo (Student-t),5.029,
+2025-08-11,Parametric (t + EWMA),7.3429,0.0068
+2025-08-11,Monte Carlo (Student-t),5.0122,
+2025-08-12,Parametric (t + EWMA),7.3451,0.0066
+2025-08-12,Monte Carlo (Student-t),5.0121,
+2025-08-13,Parametric (t + EWMA),7.3613,0.007
+2025-08-13,Monte Carlo (Student-t),5.0135,
+2025-08-14,Parametric (t + EWMA),7.3616,0.007
+2025-08-14,Monte Carlo (Student-t),5.0131,
+2025-08-15,Parametric (t + EWMA),7.3501,0.0068
+2025-08-15,Monte Carlo (Student-t),5.009,
+2025-08-18,Parametric (t + EWMA),7.3581,0.0066
+2025-08-18,Monte Carlo (Student-t),5.01,
+2025-08-19,Parametric (t + EWMA),7.3487,0.0064
+2025-08-19,Monte Carlo (Student-t),5.0084,
+2025-08-20,Parametric (t + EWMA),7.3414,0.0062
+2025-08-20,Monte Carlo (Student-t),5.0072,
+2025-08-21,Parametric (t + EWMA),7.3341,0.0061
+2025-08-21,Monte Carlo (Student-t),5.006,
+2025-08-22,Parametric (t + EWMA),7.322,0.006
+2025-08-22,Monte Carlo (Student-t),5.0025,
+2025-08-25,Parametric (t + EWMA),7.3252,0.0065
+2025-08-25,Monte Carlo (Student-t),4.9992,
+2025-08-26,Parametric (t + EWMA),7.3354,0.0066
+2025-08-26,Monte Carlo (Student-t),4.9973,
+2025-08-27,Parametric (t + EWMA),7.3294,0.0064
+2025-08-27,Monte Carlo (Student-t),4.9962,
+2025-08-28,Parametric (t + EWMA),7.3224,0.0062
+2025-08-28,Monte Carlo (Student-t),4.9951,
+2025-08-29,Parametric (t + EWMA),7.3062,0.0061
+2025-08-29,Monte Carlo (Student-t),4.99,
+2025-09-02,Parametric (t + EWMA),7.3161,0.0059
+2025-09-02,Monte Carlo (Student-t),4.9904,
+2025-09-03,Parametric (t + EWMA),7.3163,0.0058
+2025-09-03,Monte Carlo (Student-t),4.9894,
+2025-09-04,Parametric (t + EWMA),7.3139,0.0057
+2025-09-04,Monte Carlo (Student-t),4.9884,
+2025-09-05,Parametric (t + EWMA),7.3152,0.0057
+2025-09-05,Monte Carlo (Student-t),4.9878,
+2025-09-08,Parametric (t + EWMA),7.2766,0.0055
+2025-09-08,Monte Carlo (Student-t),4.9761,
+2025-09-09,Parametric (t + EWMA),7.2716,0.0054
+2025-09-09,Monte Carlo (Student-t),4.9743,
+2025-09-10,Parametric (t + EWMA),7.2713,0.0052
+2025-09-10,Monte Carlo (Student-t),4.9736,
+2025-09-11,Parametric (t + EWMA),7.2644,0.0051
+2025-09-11,Monte Carlo (Student-t),4.9724,
+2025-09-12,Parametric (t + EWMA),7.2851,0.0058
+2025-09-12,Monte Carlo (Student-t),4.9739,
+2025-09-15,Parametric (t + EWMA),7.2985,0.0058
+2025-09-15,Monte Carlo (Student-t),4.9729,
+2025-09-16,Parametric (t + EWMA),7.2945,0.0056
+2025-09-16,Monte Carlo (Student-t),4.9724,
+2025-09-17,Parametric (t + EWMA),7.2946,0.0055
+2025-09-17,Monte Carlo (Student-t),4.9724,
+2025-09-18,Parametric (t + EWMA),7.2913,0.0054
+2025-09-18,Monte Carlo (Student-t),4.9715,
+2025-09-19,Parametric (t + EWMA),7.2918,0.0054
+2025-09-19,Monte Carlo (Student-t),4.9708,
+2025-09-22,Parametric (t + EWMA),7.2743,0.0052
+2025-09-22,Monte Carlo (Student-t),4.9678,
+2025-09-23,Parametric (t + EWMA),7.2685,0.0051
+2025-09-23,Monte Carlo (Student-t),4.9663,
+2025-09-24,Parametric (t + EWMA),7.2714,0.0049
+2025-09-24,Monte Carlo (Student-t),4.9664,
+2025-09-25,Parametric (t + EWMA),7.2702,0.0048
+2025-09-25,Monte Carlo (Student-t),4.9655,
+2025-09-26,Parametric (t + EWMA),7.2781,0.0048
+2025-09-26,Monte Carlo (Student-t),4.9649,
+2025-09-29,Parametric (t + EWMA),7.2241,0.0049
+2025-09-29,Monte Carlo (Student-t),4.9477,
+2025-09-30,Parametric (t + EWMA),7.2198,0.0047
+2025-09-30,Monte Carlo (Student-t),4.9459,
+2025-10-01,Parametric (t + EWMA),7.2155,0.0047
+2025-10-01,Monte Carlo (Student-t),4.9448,
+2025-10-02,Parametric (t + EWMA),7.2185,0.0047
+2025-10-02,Monte Carlo (Student-t),4.9441,
+2025-10-03,Parametric (t + EWMA),7.2098,0.0046
+2025-10-03,Monte Carlo (Student-t),4.9407,
+2025-10-06,Parametric (t + EWMA),7.1753,0.0045
+2025-10-06,Monte Carlo (Student-t),4.9241,
+2025-10-07,Parametric (t + EWMA),7.178,0.0044
+2025-10-07,Monte Carlo (Student-t),4.9241,
+2025-10-08,Parametric (t + EWMA),7.1811,0.0044
+2025-10-08,Monte Carlo (Student-t),4.9233,
+2025-10-09,Parametric (t + EWMA),7.1803,0.0043
+2025-10-09,Monte Carlo (Student-t),4.9225,
+2025-10-10,Parametric (t + EWMA),7.1696,0.0043
+2025-10-10,Monte Carlo (Student-t),4.914,
+2025-10-13,Parametric (t + EWMA),6.8946,0.0064
+2025-10-13,Monte Carlo (Student-t),4.921,
+2025-10-14,Parametric (t + EWMA),6.9027,0.0067
+2025-10-14,Monte Carlo (Student-t),4.9189,
+2025-10-15,Parametric (t + EWMA),6.9003,0.0067
+2025-10-15,Monte Carlo (Student-t),4.9182,
+2025-10-16,Parametric (t + EWMA),6.8951,0.0065
+2025-10-16,Monte Carlo (Student-t),4.9172,
+2025-10-17,Parametric (t + EWMA),6.905,0.0066
+2025-10-17,Monte Carlo (Student-t),4.9152,
+2025-10-20,Parametric (t + EWMA),6.9124,0.0065
+2025-10-20,Monte Carlo (Student-t),4.9153,
+2025-10-21,Parametric (t + EWMA),6.9223,0.0068
+2025-10-21,Monte Carlo (Student-t),4.916,
+2025-10-22,Parametric (t + EWMA),6.9169,0.0066
+2025-10-22,Monte Carlo (Student-t),4.915,
+2025-10-23,Parametric (t + EWMA),6.9182,0.0065
+2025-10-23,Monte Carlo (Student-t),4.9144,
+2025-10-24,Parametric (t + EWMA),6.9152,0.0064
+2025-10-24,Monte Carlo (Student-t),4.9127,
+2025-10-27,Parametric (t + EWMA),6.9086,0.0062
+2025-10-27,Monte Carlo (Student-t),4.9089,
+2025-10-28,Parametric (t + EWMA),6.9206,0.0064
+2025-10-28,Monte Carlo (Student-t),4.91,
+2025-10-29,Parametric (t + EWMA),6.9219,0.0063
+2025-10-29,Monte Carlo (Student-t),4.9094,
+2025-10-30,Parametric (t + EWMA),6.9464,0.0067
+2025-10-30,Monte Carlo (Student-t),4.911,
+2025-10-31,Parametric (t + EWMA),6.949,0.0066
+2025-10-31,Monte Carlo (Student-t),4.9106,
+2025-11-03,Parametric (t + EWMA),6.9525,0.0064
+2025-11-03,Monte Carlo (Student-t),4.9103,
+2025-11-04,Parametric (t + EWMA),6.9559,0.0062
+2025-11-04,Monte Carlo (Student-t),4.9105,
+2025-11-05,Parametric (t + EWMA),6.9586,0.0062
+2025-11-05,Monte Carlo (Student-t),4.9082,
+2025-11-06,Parametric (t + EWMA),6.9563,0.0061
+2025-11-06,Monte Carlo (Student-t),4.9075,
+2025-11-07,Parametric (t + EWMA),6.9716,0.0063
+2025-11-07,Monte Carlo (Student-t),4.9079,
+2025-11-10,Parametric (t + EWMA),6.9795,0.0062
+2025-11-10,Monte Carlo (Student-t),4.9094,
+2025-11-11,Parametric (t + EWMA),6.9884,0.0062
+2025-11-11,Monte Carlo (Student-t),4.9102,
+2025-11-12,Parametric (t + EWMA),6.9992,0.0064
+2025-11-12,Monte Carlo (Student-t),4.9113,
+2025-11-13,Parametric (t + EWMA),6.9991,0.0064
+2025-11-13,Monte Carlo (Student-t),4.9108,
+2025-11-14,Parametric (t + EWMA),7.024,0.0068
+2025-11-14,Monte Carlo (Student-t),4.9125,
+2025-11-17,Parametric (t + EWMA),7.0253,0.0066
+2025-11-17,Monte Carlo (Student-t),4.912,
+2025-11-18,Parametric (t + EWMA),7.048,0.0068
+2025-11-18,Monte Carlo (Student-t),4.9135,
+2025-11-19,Parametric (t + EWMA),7.0547,0.0067
+2025-11-19,Monte Carlo (Student-t),4.9139,
+2025-11-20,Parametric (t + EWMA),7.0492,0.0065
+2025-11-20,Monte Carlo (Student-t),4.9129,
+2025-11-21,Parametric (t + EWMA),7.0798,0.0072
+2025-11-21,Monte Carlo (Student-t),4.9161,
+2025-11-24,Parametric (t + EWMA),7.1008,0.0077
+2025-11-24,Monte Carlo (Student-t),4.9198,
+2025-11-25,Parametric (t + EWMA),7.1035,0.0076
+2025-11-25,Monte Carlo (Student-t),4.9201,
+2025-11-26,Parametric (t + EWMA),7.1149,0.0079
+2025-11-26,Monte Carlo (Student-t),4.9217,
+2025-11-28,Parametric (t + EWMA),7.1107,0.0078
+2025-11-28,Monte Carlo (Student-t),4.921,
+2025-12-01,Parametric (t + EWMA),7.1236,0.0077
+2025-12-01,Monte Carlo (Student-t),4.9234,
+2025-12-02,Parametric (t + EWMA),7.1272,0.0077
+2025-12-02,Monte Carlo (Student-t),4.9232,
+2025-12-03,Parametric (t + EWMA),7.1208,0.0074
+2025-12-03,Monte Carlo (Student-t),4.9222,
+2025-12-04,Parametric (t + EWMA),7.13,0.0077
+2025-12-04,Monte Carlo (Student-t),4.9232,
+2025-12-05,Parametric (t + EWMA),7.0989,0.0075
+2025-12-05,Monte Carlo (Student-t),4.9196,
+2025-12-08,Parametric (t + EWMA),7.0744,0.0073
+2025-12-08,Monte Carlo (Student-t),4.9157,
+2025-12-09,Parametric (t + EWMA),7.0826,0.0072
+2025-12-09,Monte Carlo (Student-t),4.9161,
+2025-12-10,Parametric (t + EWMA),7.0779,0.007
+2025-12-10,Monte Carlo (Student-t),4.9151,
+2025-12-11,Parametric (t + EWMA),7.0841,0.0071
+2025-12-11,Monte Carlo (Student-t),4.9155,
+2025-12-12,Parametric (t + EWMA),7.0869,0.0071
+2025-12-12,Monte Carlo (Student-t),4.916,
+2025-12-15,Parametric (t + EWMA),7.1037,0.0069
+2025-12-15,Monte Carlo (Student-t),4.9184,
+2025-12-16,Parametric (t + EWMA),7.0881,0.0067
+2025-12-16,Monte Carlo (Student-t),4.917,
+2025-12-17,Parametric (t + EWMA),7.0915,0.0066
+2025-12-17,Monte Carlo (Student-t),4.9166,
+2025-12-18,Parametric (t + EWMA),7.0967,0.0066
+2025-12-18,Monte Carlo (Student-t),4.9163,
+2025-12-19,Parametric (t + EWMA),7.0913,0.0064
+2025-12-19,Monte Carlo (Student-t),4.9154,
+2025-12-22,Parametric (t + EWMA),7.0824,0.0064
+2025-12-22,Monte Carlo (Student-t),4.9147,
+2025-12-23,Parametric (t + EWMA),7.0765,0.0064
+2025-12-23,Monte Carlo (Student-t),4.9142,
+2025-12-24,Parametric (t + EWMA),7.0704,0.0062
+2025-12-24,Monte Carlo (Student-t),4.9131,
+2025-12-26,Parametric (t + EWMA),7.0732,0.0061
+2025-12-26,Monte Carlo (Student-t),4.9134,
+2025-12-29,Parametric (t + EWMA),7.2917,0.0059
+2025-12-29,Monte Carlo (Student-t),4.9005,
+2025-12-30,Parametric (t + EWMA),7.2641,0.0058
+2025-12-30,Monte Carlo (Student-t),4.8954,
+2025-12-31,Parametric (t + EWMA),7.2587,0.0056
+2025-12-31,Monte Carlo (Student-t),4.8944,

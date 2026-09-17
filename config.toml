@@ -17,6 +17,11 @@ confidence_levels = [0.95, 0.97, 0.99]
 mc_simulations = 10_000
 mc_seed = 42
 mc_df_bounds = [3.0, 30.0]     # Student-t degrees of freedom are fitted per day, then clipped
+mc_df_method = "moments"       # "moments" (fast, from kurtosis) or "mle" (slower, maximum likelihood)
+ewma_lambda = 0.94             # RiskMetrics decay for the EWMA covariance: ~11-day half-life
+
+[compute]
+workers = 8                    # forecast days are independent, so they run on a thread pool
 
 [data]
 cache_dir = "data/raw"

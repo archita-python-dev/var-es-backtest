@@ -1,0 +1,7 @@
+stage,kind,seconds
+Historical,model,0.083
+Parametric (Normal),model,0.145
+Parametric (t + EWMA),model,0.382
+Monte Carlo (Student-t),model,5.73
+"Shared inputs (mean, covariance)",shared,0.396
+Wall clock (8 workers),wall,2.858

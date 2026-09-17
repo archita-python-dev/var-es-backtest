@@ -37,6 +37,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--config", default="config.toml", help="path to the TOML config")
     parser.add_argument("--weighting", choices=WEIGHTINGS, help="override the config's weighting method")
     parser.add_argument("--refresh-data", action="store_true", help="re-download prices even if cached")
+    parser.add_argument("--workers", type=int, help="override the config's thread count")
     args = parser.parse_args(argv)
 
     cfg = load_config(args.config, args.weighting)
@@ -51,6 +52,7 @@ def main(argv: list[str] | None = None) -> int:
     result = run_backtest(
         market.returns, w, cfg.aum, cfg.test_start, cfg.test_end, cfg.window_months,
         cfg.confidence_levels, cfg.mc_simulations, cfg.mc_seed, cfg.mc_df_bounds,
+        ewma_lambda=cfg.ewma_lambda, mc_df_method=cfg.mc_df_method, workers=args.workers or cfg.workers,
     )
     out = write_outputs(result, weights, market.quality, cfg)
 

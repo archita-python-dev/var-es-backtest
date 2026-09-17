@@ -14,7 +14,7 @@ from matplotlib.patches import Patch
 import numpy as np
 import pandas as pd
 
-from .backtest import METHODS, BacktestResult, exceptions, monthly_breaches, summarise
+from .backtest import METHODS, SHARED_INPUTS, BacktestResult, exceptions, monthly_breaches, summarise
 from .config import Config
 from .style import BASELINE, GRID, INK, INK_MUTED, INK_SECONDARY, PNL_BAR, SERIES_COLORS, SURFACE
 
@@ -37,7 +37,8 @@ def write_outputs(result: BacktestResult, weights: pd.DataFrame, quality: pd.Dat
     monthly.to_csv(out / "monthly_breaches.csv")
     _round_money(exc).to_csv(out / "exceptions.csv", index=False)
     _round_money(result.daily).to_csv(out / "daily_forecasts.csv", index=False)
-    result.t_df.rename_axis("date").round(4).to_csv(out / "student_t_df.csv")
+    result.diagnostics.round(4).to_csv(out / "fitted_parameters.csv", index=False)
+    compute_profile(result).to_csv(out / "compute_profile.csv", index=False)
     weights.to_csv(out / "weights.csv")
     quality.to_csv(out / "data_quality.csv", index=False)
 
@@ -46,6 +47,15 @@ def write_outputs(result: BacktestResult, weights: pd.DataFrame, quality: pd.Dat
     (out / "report.md").write_text(render_report(summary, monthly, exc, weights, quality, result, cfg))
     log.info("Wrote outputs to %s", out)
     return out
+
+
+def compute_profile(result: BacktestResult) -> pd.DataFrame:
+    """Where the time went: per model, the shared inputs they all read, and elapsed wall time."""
+    rows = [{"stage": name, "kind": "model", "seconds": secs} for name, secs in result.runtime.items()]
+    rows.append({"stage": SHARED_INPUTS, "kind": "shared", "seconds": result.shared_seconds})
+    rows.append({"stage": f"Wall clock ({result.workers} worker{'' if result.workers == 1 else 's'})",
+                 "kind": "wall", "seconds": result.wall_seconds})
+    return pd.DataFrame(rows).round({"seconds": 3})
 
 
 def _round_money(frame: pd.DataFrame) -> pd.DataFrame:
@@ -127,10 +137,23 @@ def render_report(summary, monthly, exc, weights, quality, result: BacktestResul
         "",
         f"Every breach is listed in `exceptions.csv` ({len(exc)} rows across all methods and confidence levels).",
         "",
-        "## Monte Carlo tail thickness",
+        "## Fitted tail thickness",
         "",
-        f"Fitted Student-t degrees of freedom: median {result.t_df.median():.1f}, "
-        f"range {result.t_df.min():.1f} to {result.t_df.max():.1f}. Lower values mean more extreme days.",
+        _df_summary(result),
+        "",
+        "## Compute",
+        "",
+        f"- Forecast days run on {result.workers} worker thread{'' if result.workers == 1 else 's'}; "
+        f"wall clock {result.wall_seconds:.1f}s for {daily['date'].nunique()} days.",
+        f"- Shared inputs (window mean, sample covariance, EWMA covariance): {result.shared_seconds:.1f}s. "
+        "Each model's runtime excludes these, since every model reads the same ones.",
+        "- Per-model seconds are measured on a serial sample of days and scaled to the full year, so they "
+        "compare like with like; timing a model inside a worker thread would also count time spent waiting "
+        "on the other threads." if result.extras.get("model_cost_timed_serially") else
+        "- Per-model seconds are measured directly, one day at a time.",
+        "",
+        compute_profile(result).rename(columns={"stage": "Stage", "kind": "Kind", "seconds": "Seconds"})
+            .to_markdown(index=False),
         "",
         "## Portfolio",
         "",
@@ -149,6 +172,19 @@ def render_report(summary, monthly, exc, weights, quality, result: BacktestResul
         fallback = weights[weights["source"] != "historical"]
         lines += [f"- Share counts from current data instead of history: {len(fallback)} tickers"
                   + (f" ({', '.join(fallback.index)})" if len(fallback) else ""), ""]
+    return "\n".join(lines)
+
+
+def _df_summary(result: BacktestResult) -> str:
+    """Median and range of the fitted Student-t degrees of freedom, per model that fits one."""
+    diag = result.diagnostics
+    if diag.empty or "t_df" not in diag:
+        return "No fitted tail parameters."
+    lines = []
+    for method, g in diag.dropna(subset=["t_df"]).groupby("method"):
+        lines.append(f"- **{method}**: median df {g['t_df'].median():.1f}, "
+                     f"range {g['t_df'].min():.1f} to {g['t_df'].max():.1f}.")
+    lines.append("Lower degrees of freedom mean fatter tails: more extreme days than a normal distribution allows.")
     return "\n".join(lines)
 
 

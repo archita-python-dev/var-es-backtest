@@ -23,6 +23,26 @@ def _run(returns, **overrides):
     return run_backtest(returns, **kwargs)
 
 
+def test_threads_give_identical_results_to_serial(synthetic_returns):
+    """Per-day seeding means the thread pool cannot change a single number."""
+    serial = _run(synthetic_returns, workers=1).daily
+    parallel = _run(synthetic_returns, workers=8).daily
+    pd.testing.assert_frame_equal(serial, parallel)
+
+
+def test_every_model_reports_a_forecast_for_every_day(synthetic_returns):
+    result = _run(synthetic_returns)
+    counts = result.daily.groupby("method")["date"].nunique()
+    assert set(counts.index) == set(METHODS)
+    assert counts.nunique() == 1
+
+
+def test_shared_inputs_are_timed_separately(synthetic_returns):
+    result = _run(synthetic_returns)
+    assert result.shared_seconds > 0
+    assert set(result.runtime) == set(METHODS)
+
+
 def test_window_excludes_forecast_date_and_rolls(synthetic_returns):
     result = _run(synthetic_returns)
     d = result.daily
