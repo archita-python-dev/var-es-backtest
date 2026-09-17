@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "var-backtest"
+version = "0.1.0"
+description = "Rolling-window VaR and Expected Shortfall backtest for a $1B, 100-stock equity portfolio"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "pandas>=2.1", "scipy>=1.11", "matplotlib>=3.8", "yfinance>=0.2.40", "tabulate>=0.9"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+var-backtest = "var_backtest.cli:main"
+var-compare = "var_backtest.compare:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

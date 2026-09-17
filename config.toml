@@ -1,0 +1,47 @@
+# VaR / Expected Shortfall backtest configuration.
+# Every run copies this file's resolved values into its log, so results can be traced to inputs.
+
+[portfolio]
+aum = 1_000_000_000            # USD
+weighting = "equal"            # "equal" or "market_cap" (override with --weighting)
+universe_size = 100
+
+[dates]
+data_start = "2020-01-01"      # 6 years of prices: 5 years of estimation history + 1 test year
+test_start = "2025-01-01"
+test_end = "2025-12-31"
+window_months = 59             # rolling estimation window, re-anchored every test day
+
+[risk]
+confidence_levels = [0.95, 0.97, 0.99]
+mc_simulations = 10_000
+mc_seed = 42
+mc_df_bounds = [3.0, 30.0]     # Student-t degrees of freedom are fitted per day, then clipped
+
+[data]
+cache_dir = "data/raw"
+max_filled_gaps = 5            # a ticker with more missing days than this is dropped
+
+[output]
+output_dir = "outputs"
+log_dir = "logs"
+
+[universe]
+# Candidates in approximate order of market cap on 31 Dec 2024 (the day before the test year),
+# so the stock selection uses no information from the test period. The first `universe_size`
+# tickers that pass the data-quality checks are used. Recent IPOs/spin-offs (PLTR, GEV, ABNB)
+# are listed on purpose: they lack a full price history and are dropped and logged.
+candidates = [
+  "AAPL", "NVDA", "MSFT", "AMZN", "GOOGL", "META", "TSLA", "AVGO", "BRK-B", "WMT",
+  "LLY", "JPM", "V", "MA", "ORCL", "XOM", "UNH", "COST", "PG", "HD",
+  "NFLX", "JNJ", "BAC", "CRM", "ABBV", "KO", "TMUS", "CVX", "MRK", "WFC",
+  "CSCO", "ACN", "NOW", "MS", "AXP", "IBM", "PEP", "MCD", "LIN", "DIS",
+  "PLTR", "TMO", "ABT", "AMD", "ISRG", "GS", "PM", "ADBE", "GE", "INTU",
+  "CAT", "QCOM", "TXN", "VZ", "T", "BKNG", "BLK", "SPGI", "RTX", "C",
+  "DHR", "PGR", "LOW", "AMGN", "SCHW", "UNP", "NEE", "HON", "PFE", "ETN",
+  "AMAT", "CMCSA", "UBER", "COP", "SYK", "TJX", "BSX", "KKR", "ADP", "ANET",
+  "GEV", "FISV", "PANW", "MU", "BX", "VRTX", "GILD", "LMT", "BMY", "SBUX",
+  "MDT", "ADI", "CB", "MRSH", "PLD", "INTC", "UPS", "DE", "LRCX", "ELV",
+  "SO", "MO", "AMT", "KLAC", "CI", "APH", "SHW", "ICE", "NKE", "DUK",
+  "ABNB", "PH", "CME", "EQIX", "MDLZ", "WM", "PYPL", "CRWD", "TT", "MCO",
+]
